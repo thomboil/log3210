@@ -161,10 +161,10 @@ public class IntermediateCodeGenVisitor implements ParserVisitor {
         if(node.jjtGetNumChildren() == 1) {
             return node.jjtGetChild(0).jjtAccept(this, data);
         } else {
+            String id = genId();
+
             String first = (String) node.jjtGetChild(0).jjtAccept(this, data);
             String second = (String) node.jjtGetChild(1).jjtAccept(this, data);
-
-            String id = genId();
 
             m_writer.print(id + " = " + first + " " + ops.firstElement() + " " + second + "\n");
             return id;
@@ -185,7 +185,32 @@ public class IntermediateCodeGenVisitor implements ParserVisitor {
     //chercher un deuxième noeud enfant pour avoir une valeur puisqu'il s'agit d'une opération unaire.
     @Override
     public Object visit(ASTUnaExpr node, Object data) {
-        return node.jjtGetChild(0).jjtAccept(this, data);
+        if(node.getOps().size() != 0) {
+            String child = (String) node.jjtGetChild(0).jjtAccept(this, data);
+            String id = genId();
+
+            if(node.getOps().size() == 1) {
+                m_writer.print(id + " = " + node.getOps().firstElement() + " " + child + "\n");
+                return id;
+            } else {
+                int index = 0;
+                for(Object op : node.getOps()) {
+                    m_writer.print(id + " = " + op + " " + child + "\n");
+                    child = id;
+                    index++;
+                    if(index < node.getOps().size()) {
+                        id = genId();
+                    }
+
+                }
+            }
+
+            return id;
+
+        } else {
+            return node.jjtGetChild(0).jjtAccept(this, data);
+        }
+
     }
 
     //expression logique
