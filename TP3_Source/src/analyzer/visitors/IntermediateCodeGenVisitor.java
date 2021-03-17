@@ -46,16 +46,10 @@ public class IntermediateCodeGenVisitor implements ParserVisitor {
     private String genId() {
         return "_t" + id++;
     }
-    private String genIdActual()  {
-        return "_t" + id;
-    }
 
     //génère un nouveau Label qu'il est possible de print.
     private String genLabel() {
         return "_L" + label++;
-    }
-    private String genLabelActual() {
-        return "_L" + label;
     }
 
     @Override
@@ -201,12 +195,9 @@ public class IntermediateCodeGenVisitor implements ParserVisitor {
                     if(index < node.getOps().size()) {
                         id = genId();
                     }
-
                 }
             }
-
             return id;
-
         } else {
             return node.jjtGetChild(0).jjtAccept(this, data);
         }
@@ -216,10 +207,12 @@ public class IntermediateCodeGenVisitor implements ParserVisitor {
     //expression logique
     @Override
     public Object visit(ASTBoolExpr node, Object data) {
-//        for (int i = 0; i < node.jjtGetNumChildren(); i++) {
-//            node.jjtGetChild(i).jjtAccept(this, data);
-//        }
-        return node.jjtGetChild(0).jjtAccept(this, data);
+        if(node.jjtGetNumChildren() == 1) {
+            return node.jjtGetChild(0).jjtAccept(this, data);
+        } else {
+            return null;
+        }
+
     }
 
 
@@ -253,6 +246,7 @@ public class IntermediateCodeGenVisitor implements ParserVisitor {
      */
     @Override
     public Object visit(ASTBoolValue node, Object data) {
+
         return null;
     }
 
