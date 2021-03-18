@@ -20,9 +20,9 @@ public class ASTBoolExpr extends SimpleNode {
     }
 
     // PLB
-    private Vector<String> m_ops = new Vector<>();
-    public void addOp(String o) { m_ops.add(o); }
-    public Vector getOps() { return m_ops; }
+    private String m_ops;
+    public void addOp(String o) { m_ops = o; }
+    public String getOps() { return m_ops; }
 
 }
 /* JavaCC - OriginalChecksum=9de7ce665b48309618ff4d7aaa9aa4ac (do not edit this line) */
