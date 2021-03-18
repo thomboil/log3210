@@ -270,7 +270,6 @@ public class IntermediateCodeGenVisitor implements ParserVisitor {
      */
     @Override
     public Object visit(ASTNotExpr node, Object data) {
-
         return node.jjtGetChild(0).jjtAccept(this, data);
     }
 
